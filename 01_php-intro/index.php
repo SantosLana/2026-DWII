@@ -60,7 +60,7 @@ nav a:hover {
     font-size: 14px; 
 }
 
-</style> max-width: 800px; 
+max-width: 800px; 
     margin: 40px auto; 
     padding: 0 20px; 
 }
@@ -71,8 +71,8 @@ footer {
     text-align: center;
     padding: 20px; 
     margin-top: 60px; 
-   
-
+}
+</style> 
 </head>
 <body>
 
@@ -89,12 +89,12 @@ footer {
 <div class="container">
     <h2>Bem-vindo ao meu portfólio</h2>
     <p>Esta página foi gerada pelo PHP em:
-        <strong><?php echo date("d/m/Y \à\s H:i:s"); ?></strong>
+        <strong><?php echo date("02/03/2026 \à\s 17:15:02"); ?></strong>
     </p>
 </div>
 
 <footer>
-    <?php echo $nome; ?> &copy; <?php echo date("Y"); ?>
+    <?php echo $nome; ?> &copy; <?php echo date("2026"); ?>
 </footer>
 
 </body>
