@@ -1,6 +1,6 @@
 <?php
-if (!isset($titulo_pagina)) $titulo_pagina = "Portofólio DWII";
-if (!isset($caminho_raiz)) $caminho_raiz = "../";
+    if (!isset($titulo_pagina)) $titulo_pagina = "Portofólio DWII";
+    if (!isset($caminho_raiz)) $caminho_raiz = "../";
 ?>
 
 <meta charset="UTF-8">

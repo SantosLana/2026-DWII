@@ -1,11 +1,9 @@
 <!-- 01_php-intro/sobre.php -->
 
 <?php
-
 $nome = "Lana Santos";
-
 $pagina_atual = "sobre";
-
+$caminho_raiz = "../";
 ?>
 
 <!DOCTYPE html>
@@ -14,25 +12,23 @@ $pagina_atual = "sobre";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?php echo $caminho_raiz; ?>includes/style.css">
     <title>Sobre - <?php echo $nome; ?></title>
 </head>
 
-<body style="font-family: Arial, sans-serif; margin: 0; background: #f3f4f6;">
+<body 
+<?php include $caminho_raiz . 'includes/cabecalho.php'; ?>
 
-<?php include 'includes/cabecalho.php'; ?>
-
-    <div style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
-        <h1 style="color: #3b579d;">👤 Sobre mim</h1>
+   <div class="sobre">
+        <h1> Sobre mim</h1>
         <p>Olá! Sou <strong><?php echo $nome; ?></strong>, estudante de
         Técnico em Informática no IFPR de Ponta Grossa.</p>
-
         <p>Quero cursar Direito na UEPG e depois prestar consurso púublico para a polícia civil (Até então).</p>
 
-        <a href="index.php"
-        style="color: #3b579d; font-weight: bold;">← Voltar ao início</a>
     </div>
-
-<?php include 'includes/rodape.php'; ?>
-
+<div class="btn">
+<a href="index.php"> Voltar ao início</a>
+    </div>
+    <?php include $caminho_raiz . 'includes/rodape.php'; ?>
 </body>
 </html>

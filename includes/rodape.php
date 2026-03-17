@@ -2,9 +2,10 @@
 $autor = isset($nome) ? htmlspecialchars($nome) : "Portfólio";
 ?>
 
+<!-- <footer> sem style inline: visual controlado pelo style.css -->
 <footer>
     <?php echo $autor; ?>
-    &copy; <?php echo date("2026"); ?>
+    &copy; <?php echo date("Y"); ?>
     | Desenvolvido com PHP
-    | IFPR - Ponta Grossa
+    | IFPR — Ponta Grossa
 </footer>

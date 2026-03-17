@@ -1,9 +1,9 @@
 <?php
 
-$nome          = "Lana Santos";
-$pagina_atual  = "inicio";
+$nome = "Lana Santos";
+$pagina_atual  = "projetos";
 $caminho_raiz  = "../";
-$titulo_pagina = "Portofólio - {$nome}";
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

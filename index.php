@@ -27,7 +27,7 @@ $aulas = [
     "descricao" => "Formulário com validação no servidor, proteção XSS e padrão PRG.",
     "link"      => "02_formularios/contato.php",
     "icone"     => "📬",
-    "cor"       => "#3ba34a",
+    "cor"       => "#ffb2df",
     "conceitos" => '$_POST, validação, htmlspecialchars(), header() + exit',
     ],
 ];
@@ -38,7 +38,7 @@ $aulas = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($subtitulo); ?></title>
-    <link rel="stylesheet" href="includes/style.css">
+    <link rel="stylesheet" href="../includes/style.css">
 </head>
 <body>
     <header>
