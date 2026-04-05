@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <title>Cadastro de musica com PHP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- usando um exemplo de CSS com formatação básica de formulário da W3 schools -->
+    <style>
+        input[type=text] {
+            width: 20%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        </style>
+</head>
+<body>
+    <h3>Cadastro de músicas</h3>
+
+    <!-- criar o formulário na página Web (HTML) para inserir os dados -->
+    <form action="inseririMusica.php" method="post">
+
+        <!-- criar os campos de formulário e nomeá-las para envio para o inserirMusica.php -->
+        <label for="lNomeMusica"> Nome da música: </label>
+        <input type="text" id="lNomeMusica" name="lNomeMusica"> <br>
+
+        <label for="lNomeArtista"> Nome do artista ou banda: </label>
+        <input type="text" id="lNomeArtista" name="lNomeArtista"> <br>
+
+        <label for="lNomeEstilo"> Estilo musical: </label>
+        <input type="text" id="lNomeEstilo" name="lNomeEstilo"> <br>
+
+        <!-- criar um botão para o envio das informações -->
+        <input type="submit" value="cadastrar">
+    </form>
+</body>
+</html>
