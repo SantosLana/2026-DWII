@@ -6,6 +6,7 @@ $titulo_pagina  = "Contato";
 
 $nome_visitante = $_GET['nome_visitante'] ?? '';
 $mensagem       = $_GET['mensagem'] ?? '';
+$email = $_GET['email'] ?? '';
 $erros          = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

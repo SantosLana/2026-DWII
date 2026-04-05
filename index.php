@@ -1,5 +1,5 @@
 <?php
-$nome      = "Lana Santos";
+$nome = "Lana Santos";
 $subtitulo = "Repositório 2026 - Desenvolvimento Web II";
 
 $aulas = [
@@ -43,7 +43,7 @@ $aulas = [
 <body>
     <header>
         <h1><?php echo htmlspecialchars($nome); ?> 👨‍💻 </h1>
-        <p><?php echo htmlspecialchars($subititulo); ?></p>
+        <p><?php echo htmlspecialchars($subtitulo); ?></p>
     </header>
 
     <div class="container">
@@ -52,10 +52,10 @@ $aulas = [
             <p style="font-size: 14px; color: #374151;">
                 Suba o servidor PHP na <strong>raiz</strong> para acessar todas as aulas:
 </p>
-<div style="background: #010000; color: #a8e6a3; padding: 1opx 16px;
+<div style="background: #010000; color: #a8e6a3; padding: 10px 16px;
 border-radius: 6px; margin-top: 10px; font-family: 'Courier New', monospace;
-font-size: 13px; line-height: 1.8;>
-    cd ~/workspaces/2026-DWII<br>php -S <localhost:8000>
+font-size: 13px; line-height: 1.8;">
+    cd ~/workspaces/2026-DWII<br>php -S localhost:8000
     </div>
     <p style="font-size: 13px; color: #6b7280; margin-top: 8px;">
     Esta página é o hub de navegação. Use os botões abauxo para acessar cada projeto.
@@ -71,7 +71,7 @@ font-size: 13px; line-height: 1.8;>
     <div class="icone"><?php echo $aula['icone']; ?></div>
 
     <div class="conteudo">
-        <span class="badge>Aula <?php echo htmlspecialchars($sula['numero']); ?>
+        <span class="badge">Aula <?php echo htmlspecialchars($aula['numero']); ?>
 </span>
         <h3 style="color: <?php echo $aula['cor']; ?>;">
             <?php echo htmlspecialchars($aula['nome']); ?>
