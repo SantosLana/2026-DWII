@@ -15,7 +15,7 @@ requer_login();
 
 // Dependências
 require_once __DIR__ . '/includes/conexao.php';
-
+$pagina_atual = "cadastrar";
 $erro = '';
 $sucesso = '';
 
@@ -122,7 +122,7 @@ $pagina_atual  = '';
        id="link_github"
        name="link_github"
        value="<?php echo htmlspecialchars($form['link_github']); ?>"
-       placeholder="https://github.com/SantosLana/2026-DWII">
+       placeholder="https://github.com/usuario/repositorio">
 
 <label for="ano">Ano: <span style="color: #cf1c21;">*</span></label>
 <input type="number"

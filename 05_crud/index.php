@@ -17,7 +17,21 @@ require_once __DIR__ . '/includes/conexao.php';
 
 // --- Busca todos os projetos ordenados pelo mais recente ---
 $pdo = conectar();
-$stmt = $pdo->query('SELECT * FROM projetos ORDER BY criado_em DESC');
+$busca = trim($_GET['busca'] ?? '');
+
+if ($busca !== '') {
+    $stmt = $pdo->prepare('SELECT * FROM projetos 
+                           WHERE nome LIKE :termo 
+                           ORDER BY criado_em DESC');
+
+    // % no PHP (CORRETO!)
+    $stmt->execute([
+        ':termo' => '%' . $busca . '%'
+    ]);
+} else {
+    $stmt = $pdo->query('SELECT * FROM projetos ORDER BY criado_em DESC');
+}
+
 $projetos = $stmt->fetchAll();
 
 // --- Mensagem de sucesso após cadastro ---
@@ -47,6 +61,20 @@ $pagina_atual  = '';
         </div>
     <?php endif; ?>
 
+    <form method="get" style="margin-bottom: 20px; display: flex; gap: 10px;">
+    <input type="text"
+           name="busca"
+           placeholder="🔍 Buscar por nome..."
+           value="<?php echo htmlspecialchars($busca); ?>"
+           style="flex: 1; padding: 8px;">
+
+    <button type="submit" class="btn-secundario">Buscar</button>
+
+    <?php if ($busca !== ''): ?>
+        <a href="index.php" class="btn-secundario">Limpar</a>
+    <?php endif; ?>
+</form>
+
     <?php if (empty($projetos)): ?>
         <!-- Estado vazio: nenhum projeto ainda -->
         <div class="card" style="text-align: center; padding: 40px 20px; color: #6b7280;">
@@ -59,9 +87,12 @@ $pagina_atual  = '';
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
             <?php foreach ($projetos as $projeto): ?>
                 <div class="card">
-                    <h3 style="margin: 0 0 8px; color: #3b579d; font-size: 17px;">
-                        <?php echo htmlspecialchars($projeto['nome']); ?>
-                    </h3>
+                    <h3 style="margin: 0 0 8px; font-size: 17px;">
+    <a href="detalhe.php?id=<?php echo $projeto['id']; ?>"
+       style="color: #3b579d; text-decoration: none;">
+        <?php echo htmlspecialchars($projeto['nome']); ?>
+    </a>
+</h3>
                     <p style="margin: 0 0 10px; font-size: 14px; color: #374151; line-height: 1.6;">
                         <?php echo htmlspecialchars($projeto['descricao']); ?>
                     </p>
