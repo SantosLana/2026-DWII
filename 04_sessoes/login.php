@@ -1,34 +1,62 @@
 <?php
 session_start();
-if (isset($_SESSION['usuario'])){
-    header('Location: login.php');
-    exit;
-}
+require_once __DIR__ . '/includes/auth.php';
+redirecionar_se_logado();
 
+$pagina_atual = "login";
 $USUARIO_VALIDO = 'admin';
 $SENHA_VALIDA = 'dwii2026';
 $erro = '';
 $login = '';
+$tempo_restante = 0;
+
+
+if (!isset($_SESSION['tentativas'])) {
+    $_SESSION['tentativas'] = 0;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $login = trim($_POST['usuario'] ?? '');
     $senha = trim($_POST['senha'] ?? '');
 
+
+if (isset($_SESSION['bloqueado_ate']) && time() < $_SESSION['bloqueado_ate']) {
+    $segundos = $_SESSION['bloqueado_ate'] - time();
+    $tempo_restante = $segundos ?? 0;
+   $erro = "⏳ Muitas tentativas. Aguarde $segundos s.";
+
+} else {
+
+
+
     if ($login === $USUARIO_VALIDO && $senha === $SENHA_VALIDA){
         session_regenerate_id(true);
         $_SESSION['usuario'] = $login;
-        $SESSION['logado_em'] = date('d/m/y \à\s H:i');
+        $_SESSION['logado_em'] = date('d/m/y \à\s H:i');
+        $_SESSION['flash'] = "Bem-vindo, $login!";
+        $_SESSION['tentativas'] = 0; 
+        unset($_SESSION['bloqueado_ate']);
         header('Location: painel.php');
         exit;
+    
     }
     else{
-        $erro = 'Usuário ou senha incorretos.';
+    $_SESSION['tentativas']++;
+
+    if ($_SESSION['tentativas'] >= 3) {
+        $_SESSION['bloqueado_ate'] = time() + 60; // 60 segundos
+        $_SESSION['tentativas'] = 0;
     }
+
+    $erro = 'Usuário ou senha incorretos.';
+}
+
+}
 }
 
 $titulo_pagina = 'Login - Área Restrita';
 $caminho_raiz = '../';
-$pagina_atual = '';
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -47,11 +75,12 @@ $pagina_atual = '';
 
 <?php if ($erro): ?>
     <div class="alerta-erro"> 
-        <p style="margin: 0; font-size: 14px;"> 
+        <p id="contador" style="margin: 0; font-size: 14px;"> 
             🚫 <?php echo htmlspecialchars($erro); ?>
         </p>
     </div>
 <?php endif; ?>
+
 <form action="login.php" method="post">
     <label>Usuário:</label>
     <input type="text"
@@ -68,11 +97,32 @@ $pagina_atual = '';
         </form>
         <p style="text-align: center; margin-top: 20px;
             font-size: 13px; color:lightcoral;"> 
-            <a href="../index.php" style="color:lightslategray"<←
-            Voltar ao início</a> 
+            <a href="../index.php" style="color:lightslategray">← Voltar ao início</a>
+
         </p>
     </div>
 </div>
 <?php require_once __DIR__ . '/../includes/rodape.php'; ?>
+
+<script>
+let tempo = <?php echo $tempo_restante ?? 0; ?>;
+
+if (tempo > 0) {
+    const contador = document.getElementById("contador");
+
+    const intervalo = setInterval(() => {
+        tempo--;
+
+        if (tempo <= 0) {
+            clearInterval(intervalo);
+            contador.innerHTML = "✅ Você pode tentar novamente!";
+        } else {
+            contador.innerHTML = "⏳ Aguarde " + tempo + " segundos para tentar novamente.";
+        }
+    }, 1000);
+}
+</script>
+
 </body>
 </html>
+

@@ -20,23 +20,23 @@ $pagina_atual = '';
     <p>Este conteúdo é visível para qualquer visitante, sem login.</p>
 
     <?php if ($logado): ?>
-        <p>Olá, <strong><?php echo htmlspecialchars($_SESSION['usuario']); ?></strong>!
-            Você já está autenticado.</p>
-        <a href="painel.php"
-           style="background: #3ba34a; color: white; padding: 10px 24px;
-                  border-radius: 6px; text-decoration: none;
-                  font-weight: bold;">
-            Ir ao Painel
-        </a>
-    <?php else: ?>
-        <a href="login.php"
-           style="background: #ff3687; color: white; padding:
-                  10px 24px;
-                  border-radius: 6px; text-decoration: none;
-                  font-weight: bold;">
-            🔐 Acessar Área Restrita
-        </a>
-    <?php endif; ?>
+    <p>Olá, <strong><?php echo htmlspecialchars($_SESSION['usuario']); ?></strong>!
+        Você já está autenticado.</p>
+    <a href="<?php echo $caminho_raiz; ?>04_sessoes/painel.php"
+       style="background: #3ba34a; color: white; padding: 10px 24px;
+              border-radius: 6px; text-decoration: none;
+              font-weight: bold;">
+        Ir ao Painel
+    </a>
+<?php else: ?>
+    <a href="<?php echo $caminho_raiz; ?>04_sessoes/login.php"
+       style="background: #ff3687; color: white; padding: 10px 24px;
+              border-radius: 6px; text-decoration: none;
+              font-weight: bold;">
+        🔐 Acessar Área Restrita
+    </a>
+<?php endif; ?>
+
 
 </div>
 

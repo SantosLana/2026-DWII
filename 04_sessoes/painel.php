@@ -1,16 +1,17 @@
 <?php
-//session_start();
-//if (!isset($_SESSION['usuario'])){
-  //  header('Location: login.php');
- //   exit;}
-
 require_once __DIR__ . '/includes/auth.php';
 requer_login();
+
+if (!isset($_SESSION['visitas'])) {
+    $_SESSION['visitas'] = 0;
+}
+$_SESSION['visitas']++;
 
 $titulo_pagina = 'Painel — Área Restrita';
 $caminho_raiz = '../';
 $pagina_atual = '';
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -20,11 +21,21 @@ $pagina_atual = '';
 <body>
 
 <div class="container">
+    <?php if (isset($_SESSION['flash'])): ?>
+        <div class="alerta-sucesso">
+            <?php 
+                echo $_SESSION['flash']; 
+                unset($_SESSION['flash']);
+            ?>
+        </div>
+    <?php endif; ?>
+
     <div class="alerta-sucesso">
         <h3>✅ Você está autenticado!</h3>
         <p><strong>Usuário:</strong>
             <?php echo htmlspecialchars($_SESSION['usuario']); ?>
         </p>
+        <p><strong>Visitas na sessão:</strong> <?php echo $_SESSION['visitas']; ?></p>
         <p><strong>Login realizado em:</strong>
             <?php echo htmlspecialchars($_SESSION['logado_em'] ?? '-'); ?>
         </p>
