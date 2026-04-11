@@ -1,4 +1,13 @@
 <?php
+/**
+ * Disciplina : Desenvolvimento Web II (DWII)
+ * Aula : 07 – CRUD: Create e Read
+ * Arquivo : 05_crud/cadastrar.php
+ * Autor : Lana Santos
+ * Data : 05/04/2026
+ */
+
+// --- Proteção: apenas usuários autenticados ---
 
 require_once __DIR__ . '/../04_sessoes/includes/auth.php';
 requer_login();

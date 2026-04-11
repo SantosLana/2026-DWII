@@ -17,20 +17,28 @@ require_once __DIR__ . '/includes/conexao.php';
 
 // --- Busca todos os projetos ordenados pelo mais recente ---
 $pdo = conectar();
+$stmtTec = $pdo->query('SELECT DISTINCT tecnologias FROM projetos ORDER BY tecnologias');
+$tecnologias = $stmtTec->fetchAll();
 $busca = trim($_GET['busca'] ?? '');
+$filtroTec = $_GET['tecnologia'] ?? '';
+$sql = 'SELECT * FROM projetos WHERE 1=1';
+$params = [];
 
 if ($busca !== '') {
-    $stmt = $pdo->prepare('SELECT * FROM projetos 
-                           WHERE nome LIKE :termo 
-                           ORDER BY criado_em DESC');
-
-    // % no PHP (CORRETO!)
-    $stmt->execute([
-        ':termo' => '%' . $busca . '%'
-    ]);
-} else {
-    $stmt = $pdo->query('SELECT * FROM projetos ORDER BY criado_em DESC');
+    $sql .= ' AND nome LIKE :termo';
+    $params[':termo'] = '%' . $busca . '%';
 }
+
+// filtro por tecnologia
+if ($filtroTec !== '') {
+    $sql .= ' AND tecnologias = :tec';
+    $params[':tec'] = $filtroTec;
+}
+
+$sql .= ' ORDER BY criado_em DESC';
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
 
 $projetos = $stmt->fetchAll();
 
@@ -61,18 +69,26 @@ $pagina_atual  = '';
         </div>
     <?php endif; ?>
 
-    <form method="get" style="margin-bottom: 20px; display: flex; gap: 10px;">
+    <form method="get" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+
     <input type="text"
            name="busca"
            placeholder="🔍 Buscar por nome..."
-           value="<?php echo htmlspecialchars($busca); ?>"
-           style="flex: 1; padding: 8px;">
+           value="<?php echo htmlspecialchars($busca); ?>">
 
-    <button type="submit" class="btn-secundario">Buscar</button>
+    <select name="tecnologia">
+        <option value="">Todas tecnologias</option>
 
-    <?php if ($busca !== ''): ?>
-        <a href="index.php" class="btn-secundario">Limpar</a>
-    <?php endif; ?>
+        <?php foreach ($tecnologias as $tec): ?>
+            <option value="<?php echo htmlspecialchars($tec['tecnologias']); ?>"
+                <?php echo $filtroTec === $tec['tecnologias'] ? 'selected' : ''; ?>>
+                <?php echo htmlspecialchars($tec['tecnologias']); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+
+    <button type="submit">Filtrar</button>
+
 </form>
 
     <?php if (empty($projetos)): ?>
