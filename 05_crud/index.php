@@ -45,11 +45,11 @@ $stmt->execute($params);
 
 $projetos = $stmt->fetchAll();
 
-// --- Mensagem de sucesso após cadastro ---
+// --- Mensagens ---
 $cadastroOk = isset($_GET['cadastro']) && $_GET['cadastro'] === 'ok';
-$editado = isset($_GET['editado']) && $_GET['editado'] === 'ok';
+$editado    = isset($_GET['editado']) && $_GET['editado'] === 'ok';
 $excluidoOk = isset($_GET['excluido']) && $_GET['excluido'] === 'ok';
-$erroMsg = isset($_GET['erro']) ? $_GET['erro'] : '';
+$erroMsg    = $_GET['erro'] ?? '';
 
 $titulo_pagina = 'Meus Projetos — Portfólio';
 $caminho_raiz  = '../';
@@ -87,7 +87,6 @@ $pagina_atual  = '';
         </div>
     <?php endif; ?>
 
-    <!-- Erros redirecionados por editar.php / excluir.php -->
     <?php if ($erroMsg === 'nao_encontrado'): ?>
         <div class="alerta-erro">
             <p style="margin: 0;">⚠️ Projeto não encontrado. Ele pode já ter sido removido.</p>
@@ -121,14 +120,12 @@ $pagina_atual  = '';
     </form>
 
     <?php if (empty($projetos)): ?>
-        <!-- Estado vazio: nenhum projeto ainda -->
         <div class="card" style="text-align: center; padding: 40px 20px; color: #6b7280;">
             <p style="font-size: 40px; margin: 0 0 12px;">🗂</p>
             <p style="font-size: 16px; margin: 0 0 16px;">Nenhum projeto cadastrado ainda.</p>
             <a href="cadastrar.php" class="btn-primario">Cadastrar o primeiro projeto</a>
         </div>
     <?php else: ?>
-        <!-- Grade de projetos -->
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
             <?php foreach ($projetos as $projeto): ?>
                 <div class="card">
@@ -163,8 +160,7 @@ $pagina_atual  = '';
                            class="btn-secundario">✏️ Editar</a>
 
                         <a href="excluir.php?id=<?php echo (int) $projeto['id']; ?>"
-                           class="btn-perigo">🗑️ Excluir                         
-                        </a>
+                           class="btn-perigo">🗑️ Excluir</a>
                     </div>
                 </div>
             <?php endforeach; ?>
