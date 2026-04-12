@@ -34,4 +34,16 @@ function menu_class($item, $atual) {
 🗄️ Catálogo
 </a>
 
+<a href="<?php echo $caminho_raiz; ?>04_sessoes/login.php"
+<?php echo menu_class("login", $pagina_atual); ?>>
+🔐 Login
+</a>
+
+<?php if (isset($_SESSION['usuario'])): ?>
+<a href="<?php echo $caminho_raiz; ?>05_crud/cadastrar.php"
+<?php echo menu_class("cadastrar", $pagina_atual); ?>>
+➕ Cadastrar
+</a>
+<?php endif; ?>
+
 </nav>

@@ -4,8 +4,7 @@ CREATE TABLE tecnologias (
     -> categoria        VARCHAR(50) NOT NULL,
     -> descricao        TEXT,
     -> ano_criacao      INT,
-    -> criado_em        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    -> );
+    -> criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 
 DESCRIBE tecnologias;
 

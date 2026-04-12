@@ -2,7 +2,7 @@
 /**
  * Disciplina : Desenvolvimento Web II (DWII)
  * Aula : 07 – CRUD: Create e Read
- * Arquivo : 05_crud/cadastrar.php
+ * Arquivo : 05_crud/detalhe.php
  * Autor : Lana Santos
  * Data : 05/04/2026
  */

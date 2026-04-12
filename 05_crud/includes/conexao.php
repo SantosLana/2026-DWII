@@ -1,5 +1,7 @@
 <?php
 /**
+ * Autor: Lana Santos
+ * Data: 11/04/2026
  * Disciplina : Desenvolvimento Web II (DWII)
  * Aula       : 07 – CRUD: Create e Read
  * Arquivo    : 05_crud/includes/conexao.php

@@ -1,12 +1,20 @@
 <?php
-
+/**
+ * Autor: Lana Santos
+ * Data: 11/04/2026
+ * Disciplina : Desenvolvimento Web II (2026-DWII)
+ * Aula       : 05 – PHP + MariaDB: Persistencia de dados via PDO
+ * Arquivo    : 03_pdo/includes/detalhe.php
+ */
 $caminho_raiz = '../';
 require_once 'includes/conexao.php';
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$categoria = $_GET['categoria'] ?? '';
+$busca = $_GET['busca'] ?? '';
+
 
 if (!$id) {
-
-    header('Location: index.php');
+    include '404.php';
     exit;
 }
 
@@ -15,7 +23,7 @@ $stmt->execute(['id' => $id]);
 $tec = $stmt->fetch();
 
 if (!$tec) {
-    header('Location: index.php');
+    include '404.php';
     exit;
 }
 
@@ -31,17 +39,18 @@ $pagina_atual = "catalogo";
 </head>
 <body>
     <div class="container">
-         <a href="index.php" style="color: #3b579d; font-weight:bold;">← Voltar ao catálogo</a>
+         <a href="index.php?categoria=<?php echo urlencode($categoria); ?>&busca=<?php echo urlencode($busca); ?>">← Voltar ao catálogo</a>
+
         
         <div class="card" style="margin-top: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                 <h1 style="color: #3b579d; margin: 0 0 8px; font-size: 24px;">
-                    <?php echo htmlspecialchars($tec['nome']); ?>
-                </h1>
+    <?php echo htmlspecialchars($tec['nome'] ?? 'Tecnologia'); ?></h1>
+    
                 <span style="background: #e8edf5; color: #3b579d; padding: 4px 12px;
                 border-radius: 20px; font-size: 13px; font-weight: bold;
                 white-space: nowrap;">
-                    <?php echo htmlspecialchars($tec['categoria']); ?>
+                    <?php echo htmlspecialchars($tec['categoria'] ?? ''); ?>
                 </span>
             </div>
             <p style="font-size: 16px; margin: 16px 0;">
@@ -64,7 +73,7 @@ $pagina_atual = "catalogo";
                     <td style="padding: 10px; border: 1px solid #e5e7eb; font-weight: bold;">Cadastrado em</td>
                     <td style="padding: 10px; border: 1px solid #e5e7eb;">
 
-                    <?php echo date('22/03/2026 \à\s 17:41', strtotime($tec['criado_em'])); ?>
+                    <?php echo date('d/m/Y \à\s H:i', strtotime($tec['criado_em'])); ?>
                     </td>
                 </tr>
             </table>
