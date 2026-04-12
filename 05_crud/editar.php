@@ -54,9 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validação
     if ($nome === '' || $descricao === '' || $tecnologias === '') {
-        $erro = 'Preencha todos os campos obrigatórios.';
-    }
-
+    $erro = 'Preencha todos os campos obrigatórios.';
+} elseif ($ano < 2000 || $ano > (int) date('Y') + 1) {
+    $erro = 'Ano inválido.';
+}
     // UPDATE — só executa se não há erro
     if ($erro === '') {
         // WHERE id = :id é OBRIGATÓRIO.
