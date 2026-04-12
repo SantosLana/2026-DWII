@@ -5,7 +5,8 @@
  * Arquivo : 05_crud/index.php
  * Autor : Lana Santos
  * Data : 05/04/2026
- * Descrição : Lista todos os projetos cadastrados no banco (Read)
+ * Descrição : Lista todos os projetos cadastrados no banco (Read) e exibe
+ * mensagens de feadback após cada operação.
  */
 
 // --- Proteção: apenas usuários autenticados ---
@@ -19,8 +20,10 @@ require_once __DIR__ . '/includes/conexao.php';
 $pdo = conectar();
 $stmtTec = $pdo->query('SELECT DISTINCT tecnologias FROM projetos ORDER BY tecnologias');
 $tecnologias = $stmtTec->fetchAll();
+
 $busca = trim($_GET['busca'] ?? '');
 $filtroTec = $_GET['tecnologia'] ?? '';
+
 $sql = 'SELECT * FROM projetos WHERE 1=1';
 $params = [];
 
@@ -44,6 +47,9 @@ $projetos = $stmt->fetchAll();
 
 // --- Mensagem de sucesso após cadastro ---
 $cadastroOk = isset($_GET['cadastro']) && $_GET['cadastro'] === 'ok';
+$editado = isset($_GET['editado']) && $_GET['editado'] === 'ok';
+$excluidoOk = isset($_GET['excluido']) && $_GET['excluido'] === 'ok';
+$erroMsg = isset($_GET['erro']) ? $_GET['erro'] : '';
 
 $titulo_pagina = 'Meus Projetos — Portfólio';
 $caminho_raiz  = '../';
@@ -69,27 +75,50 @@ $pagina_atual  = '';
         </div>
     <?php endif; ?>
 
+    <?php if ($editado): ?>
+        <div class="alerta-sucesso">
+            <p style="margin: 0;">✅ Projeto atualizado com sucesso!</p>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($excluidoOk): ?>
+        <div class="alerta-sucesso">
+            <p style="margin: 0;">🗑️ Projeto removido com sucesso.</p>
+        </div>
+    <?php endif; ?>
+
+    <!-- Erros redirecionados por editar.php / excluir.php -->
+    <?php if ($erroMsg === 'nao_encontrado'): ?>
+        <div class="alerta-erro">
+            <p style="margin: 0;">⚠️ Projeto não encontrado. Ele pode já ter sido removido.</p>
+        </div>
+    <?php elseif ($erroMsg === 'id_invalido'): ?>
+        <div class="alerta-erro">
+            <p style="margin: 0;">⚠️ Requisição inválida.</p>
+        </div>
+    <?php endif; ?>
+
     <form method="get" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
 
-    <input type="text"
-           name="busca"
-           placeholder="🔍 Buscar por nome..."
-           value="<?php echo htmlspecialchars($busca); ?>">
+        <input type="text"
+               name="busca"
+               placeholder="🔍 Buscar por nome..."
+               value="<?php echo htmlspecialchars($busca); ?>">
 
-    <select name="tecnologia">
-        <option value="">Todas tecnologias</option>
+        <select name="tecnologia">
+            <option value="">Todas tecnologias</option>
 
-        <?php foreach ($tecnologias as $tec): ?>
-            <option value="<?php echo htmlspecialchars($tec['tecnologias']); ?>"
-                <?php echo $filtroTec === $tec['tecnologias'] ? 'selected' : ''; ?>>
-                <?php echo htmlspecialchars($tec['tecnologias']); ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
+            <?php foreach ($tecnologias as $tec): ?>
+                <option value="<?php echo htmlspecialchars($tec['tecnologias']); ?>"
+                    <?php echo $filtroTec === $tec['tecnologias'] ? 'selected' : ''; ?>>
+                    <?php echo htmlspecialchars($tec['tecnologias']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
 
-    <button type="submit">Filtrar</button>
+        <button type="submit">Filtrar</button>
 
-</form>
+    </form>
 
     <?php if (empty($projetos)): ?>
         <!-- Estado vazio: nenhum projeto ainda -->
@@ -104,26 +133,41 @@ $pagina_atual  = '';
             <?php foreach ($projetos as $projeto): ?>
                 <div class="card">
                     <h3 style="margin: 0 0 8px; font-size: 17px;">
-    <a href="detalhe.php?id=<?php echo $projeto['id']; ?>"
-       style="color: #3b579d; text-decoration: none;">
-        <?php echo htmlspecialchars($projeto['nome']); ?>
-    </a>
-</h3>
+                        <a href="detalhe.php?id=<?php echo (int) $projeto['id']; ?>"
+                           style="color: #3b579d; text-decoration: none;">
+                            <?php echo htmlspecialchars($projeto['nome']); ?>
+                        </a>
+                    </h3>
+
                     <p style="margin: 0 0 10px; font-size: 14px; color: #374151; line-height: 1.6;">
                         <?php echo htmlspecialchars($projeto['descricao']); ?>
                     </p>
+
                     <p style="margin: 0 0 6px; font-size: 13px; color: #6b7280;">
                         🛠 <?php echo htmlspecialchars($projeto['tecnologias']); ?>
                     </p>
+
                     <p style="margin: 0 0 12px; font-size: 13px; color: #6b7280;">
                         📅 <?php echo htmlspecialchars($projeto['ano']); ?>
                     </p>
+
                     <?php if ($projeto['link_github']): ?>
                         <a href="<?php echo htmlspecialchars($projeto['link_github']); ?>"
                            target="_blank"
                            rel="noopener noreferrer"
                            class="btn-secundario">🔗 Ver no GitHub</a>
                     <?php endif; ?>
+
+                    <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+                        <a href="editar.php?id=<?php echo (int) $projeto['id']; ?>"
+                           class="btn-secundario">✏️ Editar</a>
+
+                        <a href="excluir.php?id=<?php echo (int) $projeto['id']; ?>"
+                           class="btn-perigo"
+                           onclick="return confirm('Tem certeza que deseja excluir este projeto?')">
+                           🗑️ Excluir
+                        </a>
+                    </div>
                 </div>
             <?php endforeach; ?>
         </div>
