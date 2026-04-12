@@ -1,0 +1,52 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corpo da página */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #ff5f9e, #ff8fb3);
+    color: white;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cabeçalho */
+header {
+    background-color: rgba(255, 105, 180, 0.35);
+    padding: 20px 0;
+    box-shadow: 0 4px 8px rgba(255, 20, 147, 0.4);
+}
+
+.header-container h1 {
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+/* Imagem */
+img {
+    margin: 30px auto;
+    border-radius: 50%;
+    border: 5px solid #ffc0cb;
+    object-fit: cover;
+    box-shadow: 0 8px 20px rgba(255, 20, 147, 0.5);
+}
+
+/* Parágrafo */
+p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* Rodapé */
+footer {
+    margin-top: auto;
+    background-color: rgba(255, 105, 180, 0.35);
+    padding: 15px;
+    font-size: 14px;
+}
