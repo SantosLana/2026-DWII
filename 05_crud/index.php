@@ -163,9 +163,7 @@ $pagina_atual  = '';
                            class="btn-secundario">✏️ Editar</a>
 
                         <a href="excluir.php?id=<?php echo (int) $projeto['id']; ?>"
-                           class="btn-perigo"
-                           onclick="return confirm('Tem certeza que deseja excluir este projeto?')">
-                           🗑️ Excluir
+                           class="btn-perigo">🗑️ Excluir                         
                         </a>
                     </div>
                 </div>
