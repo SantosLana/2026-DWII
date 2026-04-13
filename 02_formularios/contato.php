@@ -1,81 +1,125 @@
 <?php
-$nome           = "Lana Santos";
-$pagina_atual   = "contato";
-$caminho_raiz   = "../";
-$titulo_pagina  = "Contato";
+/**
+* Disciplina : Desenvolvimento Web II (DWII)
+* Aula : 04- PHP para Web
+* Arquivo : 02_formularios/contato.php
+* Autor : Lana Santos
+* Data : 11/04/2026
+*/
 
-$nome_visitante = $_GET['nome_visitante'] ?? '';
-$mensagem       = $_GET['mensagem'] ?? '';
-$email = $_GET['email'] ?? '';
-$erros          = [];
+// 1. Inicialização
+$nome_visitante = '';
+$email = '';
+$mensagem = '';
+$assunto = '';
+$erros = [];
 
+// 2. Processamento do formulário
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $nome_visitante = trim($_POST['nome_visitante'] ?? '');
-        $mensagem = trim($_POST['mensagem']?? '');
-        $email = trim($_POST['email'] ?? '');
-        $assunto = trim($_POST['assunto'] ?? '');
 
+    // Captura
+    $nome_visitante = trim($_POST['nome'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $mensagem = trim($_POST['mensagem'] ?? '');
+    $assunto = trim($_POST['assunto'] ?? '');
 
-        if (empty($nome_visitante)) {
-            $erros [] = 'O campo Nome é obrigatório. ' ;
-        }
-        if (empty ($mensagem) ) {
-            $erros [] = 'O campo Mensagem é obrigatório. ' ;
-        } 
-        elseif (strlen ($mensagem) < 10) {
-            $erros [] = 'A mensagem deve ter pelo menos 10 caracteres. ';
-        }
-        elseif (strlen($mensagem) > 500) {
-            $erros[] = 'A mensagem deve ter no máximo 500 caracteres.';
-        }
-        if (empty ($email) ) {
-            $erros [] = 'O campo Email é obrigatório. ' ;
-        } 
-        elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $erros[] = 'Digite um email válido.';
-        }
-        if (empty($assunto)) {
-            $erros[] = 'Selecione um assunto.';
-        }   
-
-        if (empty ($erros) && $_SERVER['REQUEST_METHOD'] === 'POST' ) {
-        header ('Location: obrigado.php?nome=' . urlencode ($nome_visitante) . '&assunto=' . urlencode ($assunto) );
-        exit;
-        }
-    
+    // Validações
+    if ($nome_visitante === '') {
+        $erros[] = 'O nome é obrigatório.';
     }
+
+    if ($email === '') {
+        $erros[] = 'O e-mail é obrigatório.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $erros[] = 'E-mail inválido.';
+    }
+
+    if ($assunto === '') {
+        $erros[] = 'Selecione um assunto.';
+    }
+
+    if ($mensagem === '') {
+        $erros[] = 'A mensagem é obrigatória.';
+    } elseif (strlen($mensagem) < 10) {
+        $erros[] = 'A mensagem deve ter no mínimo 10 caracteres.';
+    } elseif (strlen($mensagem) > 500) {
+        $erros[] = 'A mensagem deve ter no máximo 500 caracteres.';
+    }
+
+    // Se não houver erros → redireciona (PRG)
+    if (empty($erros)) {
+        header(
+            'Location: obrigado.php?nome=' . urlencode($nome_visitante) .
+            '&assunto=' . urlencode($assunto)
+        );
+        exit;
+    }
+}
+
+// 3. Variáveis do template
+$nome = "Lana Santos";
+$pagina_atual = "contato";
+$caminho_raiz = "../";
+$titulo_pagina = "Contato";
 ?>
-    <?php include $caminho_raiz . 'includes/cabecalho.php'; ?>
 
-
+<?php include '../includes/cabecalho.php'; ?>
 
 <div class="container">
-    <h1 class="titulo-secao">📫 Formulario de Contato</h1>
 
-    <form class="form-container" action="contato.php" method="post">
+    <h1 class="titulo-secao">📩 Contato</h1>
 
-    <label> Seu nome: </label>
-    <input type="text" name="nome_visitante" value="<?php echo htmlspecialchars($nome_visitante); ?>">
-    
-    <label>Seu email :</label>
-    <input type="email" name="email" value="<?php echo htmlspecialchars($email); ?>">
+    <!-- ERROS -->
+    <?php if (!empty($erros)): ?>
+        <div class="alerta-erro">
+            <?php foreach ($erros as $erro): ?>
+                <p><?php echo htmlspecialchars($erro); ?></p>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 
-    <label>Sua mensagem: </label>
-    <textarea name="mensagem" rows="4" maxlength="500"><?php echo htmlspecialchars($mensagem); ?></textarea>
-    <p class="gerado"><?php echo strlen($mensagem); ?>/500 </p>
-        <button type="submit">Enviar</button>
-    
+    <form method="post" class="formulario">
+
+        <!-- NOME -->
+        <div class="campo">
+            <label class="label-campo">Nome *</label>
+            <input type="text" name="nome" class="input-texto" required
+                   value="<?php echo htmlspecialchars($nome_visitante); ?>">
+        </div>
+
+        <!-- EMAIL -->
+        <div class="campo">
+            <label class="label-campo">E-mail *</label>
+            <input type="email" name="email" class="input-texto" required
+                   value="<?php echo htmlspecialchars($email); ?>">
+        </div>
+
+        <!-- ASSUNTO -->
+        <div class="campo">
+            <label class="label-campo">Assunto *</label>
+            <select name="assunto" class="input-texto" required>
+                <option value="">Selecione</option>
+                <option value="Dúvida" <?php if ($assunto === 'Dúvida') echo 'selected'; ?>>Dúvida</option>
+                <option value="Proposta de trabalho" <?php if ($assunto === 'Proposta de trabalho') echo 'selected'; ?>>Proposta de trabalho</option>
+                <option value="Colaboração" <?php if ($assunto === 'Colaboração') echo 'selected'; ?>>Colaboração</option>
+                <option value="Outro" <?php if ($assunto === 'Outro') echo 'selected'; ?>>Outro</option>
+            </select>
+        </div>
+
+        <!-- MENSAGEM -->
+        <div class="campo">
+            <label class="label-campo">Mensagem *</label>
+            <textarea name="mensagem" class="input-texto" rows="5" required><?php echo htmlspecialchars($mensagem); ?></textarea>
+            <p class="contador">
+                <?php echo strlen($mensagem); ?> de 500 caracteres usados
+            </p>
+        </div>
+
+        <!-- BOTÃO -->
+        <button type="submit" class="btn-primario">📨 Enviar</button>
+
     </form>
-</div> 
 
-<?php if ($nome_visitante !== ''): ?>
-    <div class="alerta-sucesso" style="margin-top: 20px;">
-        <h3>✅ Dados recebidos!</h3>
-        <p><strong>Nome:</strong>
-        <?php echo htmlspecialchars($nome_visitante); ?></p>
-        <p><strong>Mensagem:</strong>
-        <?php echo htmlspecialchars($mensagem); ?></p>
 </div>
-<?php endif; ?>
 
-<?php include $caminho_raiz . 'includes/rodape.php'; ?>
+<?php include '../includes/rodape.php'; ?>
