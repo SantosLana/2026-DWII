@@ -1,4 +1,23 @@
 <?php
+/**
+ * ════════════════════════════════════════════════════════════
+ * Disciplina : Desenvolvimento Web II (DWII)
+ * Projeto    : Portfólio Pessoal — versão refatorada
+ * Arquivo    : index.php  (homepage do portfólio)
+ * Autor      : Lana Santos
+ * Data       : 27/04/2026
+ * Descrição  : Homepage do portfólio pessoal.
+ *              Converte a apresentação estática (HTML puro) em
+ *              PHP dinâmico, integrando cabeçalho, navegação e
+ *              rodapé globais via includes.
+ * ════════════════════════════════════════════════════════════
+ */
+
+// ── Variáveis de controle do cabecalho ──────────────────────
+// $pagina_atual → lida pelo nav.php para destacar o item ativo
+// $caminho_raiz → prefixo para caminhos de CSS e links do menu
+//                 './' = estamos na raiz do projeto
+// $titulo_pagina → aparece na aba do navegador
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -12,9 +31,9 @@ $titulo_pagina = 'Portfólio — Lana Santos';
 
 $nome      = 'Lana Santos';
 $descricao = 'Estudante de Técnico em Informática no IFPR, '
-           . 'apaixonado por desenvolvimento web e tecnologia. '
-           . 'Este portfólio documenta minha jornada de aprendizado '
-           . 'ao longo da disciplina de Desenvolvimento Web II.';
+           . 'apaixonada pelo meu namorado. '
+           . 'Quero cursar Direito na UEPG, '
+           . 'e ter uma família linda com meu homem';
 $email     = '20241ctb0100039@estudantes.ifpr.edu.br';
 ?>
 
