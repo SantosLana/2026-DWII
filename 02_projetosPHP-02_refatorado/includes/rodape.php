@@ -4,8 +4,8 @@
  * Disciplina : Desenvolvimento Web II (DWII)
  * Projeto    : Portfólio Pessoal — versão refatorada
  * Arquivo    : includes/rodape.php
- * Autor      : [SEU NOME AQUI]
- * Data       : [DATA DE HOJE]
+ * Autor      : Lana Santos
+ * Data       : 27/04/2026
  * Descrição  : Rodapé global do projeto.
  *              Exibe o nome do autor e o ano atual (gerado
  *              dinamicamente por date()). Se $nome não estiver

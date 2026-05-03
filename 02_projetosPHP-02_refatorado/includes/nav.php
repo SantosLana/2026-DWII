@@ -4,8 +4,8 @@
  * Disciplina : Desenvolvimento Web II (DWII)
  * Projeto    : Portfólio Pessoal — versão refatorada
  * Arquivo    : includes/nav.php
- * Autor      : [SEU NOME AQUI]
- * Data       : [DATA DE HOJE]
+ * Autor      : Lana Santos
+ * Data       : 27/04/2026
  * Descrição  : Navegação global condicional do projeto.
  *              Links públicos: sempre visíveis.
  *              Links restritos (Painel, Sair): visíveis apenas

@@ -17,6 +17,9 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 // ✅ Ordem padrão: $pagina_atual → $titulo_pagina → $caminho_raiz
 // Sem session_start() — cabecalho.php centraliza.
 // Sem $nome — cabecalho.php fornece o fallback.
+$nome = 'Lana';
+
+
 $pagina_atual  = 'sobre';
 $titulo_pagina = 'Sobre | Portfólio DWII';
 $caminho_raiz  = './';

@@ -36,7 +36,7 @@ include __DIR__ . '/includes/cabecalho.php';
   <!-- Foto de perfil -->
   <div class="foto-container">
     <img
-      src="<?php echo $caminho_raiz; ?>02_projetosPHP-02refatorado/imgs/laninha.jpg" width="500px" height="500px"
+      src="<?php echo $caminho_raiz; ?>./includes/imgs/laninha.jpg" width="500px" height="500px"
       alt="Foto de <?php echo htmlspecialchars($nome); ?>"
       class="foto-perfil">
   </div>
