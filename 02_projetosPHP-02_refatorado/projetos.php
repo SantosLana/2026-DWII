@@ -1,48 +1,79 @@
-<!-- Disciplina : Desenvolvimento Web II (DWII) 
- Aula : 03 - PHP Intro 
- Autor : Lana Santos 
- Data : 04/04/2026 
- -->
- <?php
-$pagina_atual = "projetos";
+<?php
+/**
+ * ════════════════════════════════════════════════════════════
+ * Disciplina : Desenvolvimento Web II (DWII)
+ * Projeto    : Portfólio Pessoal — versão refatorada
+ * Arquivo    : projetos.php
+ * Autor      : Lana Santos
+ * Data       : 27/04/2026
+ * Descrição  : Lista PÚBLICA de projetos lidos do banco via PDO.
+ *              Adaptada de 05_crud/index.php - sem autenticação
+ *              e sem botões de editar/excluir
+ * ════════════════════════════════════════════════════════════
+ */
+if (session_status() === PHP_SESSION_NONE) session_start();
 
-$nome = "Lana Santos";
-$pagina_atual  = "projetos";
-$caminho_raiz  = "../";
+
+$pagina_atual = 'projetos';
+$titulo_pagina = 'Projetos | Portfólio DWII';
+$caminho_raiz = "./";
+
+require_once __DIR__ . '/includes/conexao.php';
+
+$pdo      = conectar();
+$stmt     = $pdo->query('SELECT * FROM projetos ORDER BY criado_em DESC');
+$projetos = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <?php include '../includes/cabecalho.php'; ?>
+    <?php require_once __DIR__ . '/includes/cabecalho.php'; ?>
 </head>
-
 <body>
+    <div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 class="titulo-secao" style="margin: 0;">🚀 Projetos</h1>
+        <?php if (!empty($projetos)): ?>
+            <span style="color: #6b7280; font-size: 14px;">
+                <?php echo count($projetos); ?> projeto(s)
+        </span>
+        <?php endif; ?>
+        </div>
+    <?php if (empty($projetos)): ?>
 
-<main class="container">
-    <h1>Meus Projetos</h1>
-
-    <div class="card">
-        <h2>Sistema de Cadastro de Músicas</h2>
-        <p>
-            Projeto desenvolvido com HTML, CSS, PHP e MySQL. O sistema permite cadastrar,
-            listar, alterar e excluir músicas, sendo minha primeira experiência com banco de dados.
-        </p>
+        <div class="card" style="text-align: center; padding: 40px 20px; color: #6b7280;">
+            <p style="font-size: 40px; margin: 0 0 12px;">📪</p>
+            <p style="font-size: 16px; margin:0;">Nenhum projeto cadastrado ainda.</p>
     </div>
+    <php else: ?>
+        <div style="display: grid; grid-template-columns: repeat (auto-fill, minmax(280px, 1fr)); gap: 20px;">
+        <?php foreach ($projetos as $projeto): ?>
+            <div class="card">
 
-    <div class="card">
-        <h2>Lista de coisas favoritas</h2>
-        <p>
-            Site desenvolvido em HTML para listar músicas favoritas e lugares que gostaria de conhecer.
-            Foi um dos primeiros projetos práticos e mais simples de desenvolver.
+            <h3 style="margin: 0 0 8px; color: #3b579d; font-size: 17px;">
+                <?php echo htmlspecialchars($projeto['nome']); ?>
+        </h3>
+        <p style="margin: 0 0 10px; font-size:14px; color: #374151; line-height: 1.6;">
+            <?php echo htmlspecialchars($projeto['descricao']); ?>
         </p>
-    </div>
+        <p style="margin: 0 0 6px; font-size: 13px; color: #6b7280;">
+            🛠️ <?php echo htmlspecialchars($projeto['tecnologias']); ?>
+        </p>
+        <p style="margin: 0 0 12px; font-size: 13px; color: #6b7280;">
+            📆 <?php echo (int) $projeto['ano']; ?>
+        </p>
+        <?php if ($projeto['link_github']): ?>
+            <a href="<?php echo htmlspecialchars($projeto['link_github']); ?>"
+            target="_blank" rel="noopener noreferrer"
+            class="btn-secundario">🔗 Ver no GitHub</a>
+        <?php endif; ?>
+        </div>
+        <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+        </div>
+        <?php include __DIR__ . '/includes/rodape.php'; ?>
 
-    <div class="card">
-        <h2>Primeiro CSS</h2>
-        <p>
-            Projeto focado na aplicação de estilos com CSS em uma página HTML,
-            explorando cores, layout e organização visual.
-        </p>
-    </div>
-</main>
+</body>
+</html>

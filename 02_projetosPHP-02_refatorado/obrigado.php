@@ -1,53 +1,54 @@
 <?php
 /**
-* Disciplina : Desenvolvimento Web II (DWII)
-* Aula : 04- PHP para Web
-* Arquivo : 02_formularios/obrigado.php
-* Autor : Lana Santos
-* Data : 11/04/2026
-*/
+ * ============================================================
+ * Disciplina : Desenvolvimento Web II (DWII)
+ * Projeto    : Portfólio Pessoal — versão refatorada
+ * Arquivo    : obrigado.php (migrado de 02_formularios/obrigado.php)
+ * Autor      : Lana Santos
+ * Data       : 27/04/2026
+ * Descrição  : Destino do redirecionamento PRG do contato.php.
+ *              Lê o nome do visitante via $_SESSION.
+ * ============================================================
+ */
 
-// Proteção: acesso direto sem dados → volta para contato
-//if (!isset($_GET['nome']) || !isset($_GET['assunto'])) {
-//    header('Location: contato.php');
-    //exit;
-//}
+if (session_status() === PHP_SESSION_NONE) session_start();
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+
+$titulo_pagina = 'Mensagem enviada | Portfólio DWII';
+$caminho_raiz = './';
+
+$nome_visitante = $_SESSION['contato_nome'] ?? null;
+
+if ($nome_visitante === null) {
+    header('Location: contato.php');
+    exit;
 }
 
-// Variáveis do template
-$nome = "Lana Santos";
-$pagina_atual = "contato";
-$caminho_raiz = "../";
-$titulo_pagina = "Obrigada!";
-
-// Dados vindos da URL (GET)
-$nome_visitante = htmlspecialchars($_GET['nome']);
-$assunto = htmlspecialchars($_GET['assunto']);
+unset($_SESSION['contato_nome']);
 ?>
 
-<?php include $caminho_raiz . 'includes/cabecalho.php'; ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    
+    <?php include __DIR__ . '/includes/cabecalho.php'; ?>
+</head>
+<body>
+    <div class="container">
 
-<div class="container confirmacao">
+        <div class="alerta-sucesso">
+            <h3>✅ Mensagem enviada com sucesso!</h3>
+            <p>Obrigado, <strong><?php echo htmlspecialchars($nome_visitante); ?></strong>! 🎉</p>
+            <p>Sua mensagem foi recebida. Retornarei em breve.</p>
+        </div>
 
-    <p class="confirmacao-icone">✅</p>
-
-    <h1 class="confirmacao-titulo">
-        Obrigada, <?php echo $nome_visitante; ?>!
-    </h1>
-
-    <p class="confirmacao-texto">
-        Recebemos sua mensagem sobre <strong><?php echo $assunto; ?></strong>.
-    </p>
-
-    <p class="confirmacao-texto">
-        Entrarei em contato em breve.
-    </p>
-
-    <a href="contato.php" class="btn">← Enviar outra mensagem</a>
-
+        
+        <div style="margin-top: 20px; display: flex; gap: 12px;">
+            <a href="index.php" class="btn-primario">🏠 Voltar ao Início</a>
+            <a href="contato.php" class="btn-secundario">📩 Enviar outra mensagem</a>
 </div>
 
-<?php include $caminho_raiz . 'includes/rodape.php'; ?>
+</div>
+<?php include __DIR__ . '/includes/rodape.php'; ?>
+</body>
+</html>

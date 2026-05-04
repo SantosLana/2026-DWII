@@ -1,128 +1,121 @@
 <?php
 /**
-* Disciplina : Desenvolvimento Web II (DWII)
-* Aula : 04- PHP para Web
-* Arquivo : 02_formularios/contato.php
-* Autor : Lana Santos
-* Data : 11/04/2026
-*/
+ * ============================================================
+ * Disciplina : Desenvolvimento Web II (DWII)
+ * Projeto    : Portfólio Pessoal – versão refatorada
+ * Arquivo    : contato.php (migrado de 02_formularios/contato.php)
+ * Autor      : Lana Santos
+ * Data       : 27/04/2026
+ * Padrão     : PRG – Post/Redirect/Get
+ * ============================================================
+ *
+ * ⚠️ session_start() é necessário AQUI porque $_SESSION é usado
+ * no bloco POST abaixo, antes de incluir cabecalho.php.
+ * Nenhum caractere pode aparecer antes deste bloco.
+ */
 
-// 1. Inicialização
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-} 
+if (session_status() === PHP_SESSION_NONE) session_start();
+
+$pagina_atual = 'contato';
+$titulo_pagina = 'Contato | Portfólio DWII';
+$caminho_raiz = './';
+
 $nome_visitante = '';
-$email = '';
-$mensagem = '';
-$assunto = '';
-$erros = [];
+$email     = '';
+$mensagem  = '';
+$erros     = [];
 
-// 2. Processamento do formulário
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Captura
-    $nome_visitante = trim($_POST['nome'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $mensagem = trim($_POST['mensagem'] ?? '');
-    $assunto = trim($_POST['assunto'] ?? '');
-
-    // Validações
-    if ($nome_visitante === '') {
-        $erros[] = 'O nome é obrigatório.';
+    $nome_visitante = trim($_POST['nome_visitante'] ?? '');
+    $email          = trim($_POST['email'] ?? '');
+    $mensagem       = trim($_POST['mensagem'] ?? '');
+    if (empty($nome_visitante)) {
+        $erros[] = 'O campo Nome é obrigatório.';
+    } elseif (strlen($nome_visitante) < 3) {
+        $erros[] = 'O nome deve ter pelo menos 3 caracteres.';
     }
-
-    if ($email === '') {
-        $erros[] = 'O e-mail é obrigatório.';
+    if (empty($email)) {
+        $erros[] = 'O campo E-mail é obrigatório.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $erros[] = 'E-mail inválido.';
+        // filter_var com FILTER_VALIDATE_EMAIL verifica o formato.
+        // O ! inverte: entra no if quando o e-mail é INVÁLIDO.
+        $erros[] = 'Informe um e-mail válido (ex: nome@email.com).';
     }
 
-    if ($assunto === '') {
-        $erros[] = 'Selecione um assunto.';
-    }
-
-    if ($mensagem === '') {
-        $erros[] = 'A mensagem é obrigatória.';
+    if (empty($mensagem)) {
+        $erros[] = 'O campo Mensagem é obrigatório.';
     } elseif (strlen($mensagem) < 10) {
-        $erros[] = 'A mensagem deve ter no mínimo 10 caracteres.';
+        $erros[] = 'A mensagem deve ter pelo menos 10 caracteres.';
     } elseif (strlen($mensagem) > 500) {
-        $erros[] = 'A mensagem deve ter no máximo 500 caracteres.';
+        $erros[] = 'A mensagem não pode ultrapassar 500 caracteres.';
     }
 
-    // Se não houver erros → redireciona (PRG)
     if (empty($erros)) {
-        header(
-            'Location: obrigado.php?nome=' . urlencode($nome_visitante) .
-            '&assunto=' . urlencode($assunto)
-        );
-        exit;
+        
+        $_SESSION['contato_nome'] = $nome_visitante;
+
+        header("Location: obrigado.php");
+        exit; 
     }
 }
-
-// 3. Variáveis do template
-$nome = "Lana Santos";
-$pagina_atual = "contato";
-$caminho_raiz = "./";
-$titulo_pagina = "Contato";
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
 
-<?php include './includes/cabecalho.php'; ?>
+    <?php include __DIR__ . '/includes/cabecalho.php'; ?>
+</head>
+<body>
+    <div class="container">
+        <h1 class="titulo-secao">📩 Entre em Contato</h1>
 
-<div class="container">
+        <?php if (!empty($erros)) : ?>
+            <!-- ✅ Classe .alerta-erro substitui bloco style="" inline -->
+            <div class="alerta-erro">
+                <h3>⚠️ Corrija os erros abaixo:</h3>
+                <ul style="margin: 6px 0 0; padding-left: 20px;">
+                    <?php foreach ($erros as $erro) : ?>
+                        <li><?php echo htmlspecialchars($erro); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
 
-    <h1 class="titulo-secao">📩 Contato</h1>
-
-    <!-- ERROS -->
-    <?php if (!empty($erros)): ?>
-        <div class="alerta-erro">
-            <?php foreach ($erros as $erro): ?>
-                <p><?php echo htmlspecialchars($erro); ?></p>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-
-    <form method="post" class="formulario">
-
-        <!-- NOME -->
+<div class="form-container">
+    <form class="formulario" method="post" action="contato.php">
         <div class="campo">
-            <label class="label-campo">Nome *</label>
-            <input type="text" name="nome" class="input-texto" required
-                   value="<?php echo htmlspecialchars($nome_visitante); ?>">
+            <label class="label-campo" for="nome_visitante">Nome *</label>
+            <input class="input-texto" type="text" id="nome_visitante"
+                   name="nome_visitante" placeholder="Seu nome completo"
+                   value="<?php
+                  
+                   echo htmlspecialchars($nome_visitante);
+                   ?>">
         </div>
-
-        <!-- EMAIL -->
         <div class="campo">
-            <label class="label-campo">E-mail *</label>
-            <input type="email" name="email" class="input-texto" required
+            <label class="label-campo" for="email">E-mail *</label>
+            <input class="input-texto" type="email" id="email" name="email"
+                   placeholder="seu@email.com"
                    value="<?php echo htmlspecialchars($email); ?>">
         </div>
-
-        <!-- ASSUNTO -->
         <div class="campo">
-            <label class="label-campo">Assunto *</label>
-            <select name="assunto" class="input-texto" required>
-                <option value="">Selecione</option>
-                <option value="Dúvida" <?php if ($assunto === 'Dúvida') echo 'selected'; ?>>Dúvida</option>
-                <option value="Proposta de trabalho" <?php if ($assunto === 'Proposta de trabalho') echo 'selected'; ?>>Proposta de trabalho</option>
-                <option value="Colaboração" <?php if ($assunto === 'Colaboração') echo 'selected'; ?>>Colaboração</option>
-                <option value="Outro" <?php if ($assunto === 'Outro') echo 'selected'; ?>>Outro</option>
-            </select>
-        </div>
+            <label class="label-campo" for="mensagem">Mensagem *
+<span style="color: #6b7280; font-weight: normal; font-size: 13px;">
+  (mín. 10, máx. 500 caracteres)
+</span>
+</label>
 
-        <!-- MENSAGEM -->
-        <div class="campo">
-            <label class="label-campo">Mensagem *</label>
-            <textarea name="mensagem" class="input-texto" rows="5" required><?php echo htmlspecialchars($mensagem); ?></textarea>
-            <p class="contador">
-                <?php echo strlen($mensagem); ?> de 500 caracteres usados
-            </p>
-        </div>
-
-        <!-- BOTÃO -->
-        <button type="submit" class="btn-primario">📨 Enviar</button>
-
-    </form>
-
+<textarea class="input-texto" id="mensagem" name="mensagem"
+  rows="5" placeholder="Escreva sua mensagem..."
+  maxlength="500"><?php echo htmlspecialchars($mensagem); ?></textarea>
 </div>
-
-<?php include './includes/rodape.php'; ?>
+<button type="submit" class="btn-primario" style="width: 100%;">
+  Enviar Mensagem 📩
+</button>
+</form>
+</div>
+</div>
+<?php include __DIR__ . '/includes/rodape.php'; ?>
+</body>
+</html>
