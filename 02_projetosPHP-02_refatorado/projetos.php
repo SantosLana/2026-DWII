@@ -5,26 +5,26 @@
  * Projeto    : Portfólio Pessoal — versão refatorada
  * Arquivo    : projetos.php
  * Autor      : Lana Santos
- * Data       : 27/04/2026
+ * Data       : 28/04/2026
  * Descrição  : Lista PÚBLICA de projetos lidos do banco via PDO.
  *              Adaptada de 05_crud/index.php - sem autenticação
  *              e sem botões de editar/excluir
  * ════════════════════════════════════════════════════════════
  */
 if (session_status() === PHP_SESSION_NONE) session_start();
-
-
 $pagina_atual = 'projetos';
 $titulo_pagina = 'Projetos | Portfólio DWII';
 $caminho_raiz = "./";
 
 require_once __DIR__ . '/includes/conexao.php';
-
 $pdo      = conectar();
-$stmt     = $pdo->query('SELECT * FROM projetos ORDER BY criado_em DESC');
+$stmt = $pdo->query(
+    "SELECT * FROM projetos
+       WHERE status = 'publicado'
+       ORDER BY criado_em DESC"
+);
 $projetos = $stmt->fetchAll();
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -48,9 +48,9 @@ $projetos = $stmt->fetchAll();
     </div>
     <php else: ?>
         <div style="display: grid; grid-template-columns: repeat (auto-fill, minmax(280px, 1fr)); gap: 20px;">
+
         <?php foreach ($projetos as $projeto): ?>
             <div class="card">
-
             <h3 style="margin: 0 0 8px; color: #3b579d; font-size: 17px;">
                 <?php echo htmlspecialchars($projeto['nome']); ?>
         </h3>
