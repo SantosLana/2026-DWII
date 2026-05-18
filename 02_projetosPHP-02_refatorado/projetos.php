@@ -46,19 +46,20 @@ $projetos = $stmt->fetchAll();
             <p style="font-size: 40px; margin: 0 0 12px;">📪</p>
             <p style="font-size: 16px; margin:0;">Nenhum projeto cadastrado ainda.</p>
     </div>
-    <php else: ?>
+    <?php else: ?>
         <div style="display: grid; grid-template-columns: repeat (auto-fill, minmax(280px, 1fr)); gap: 20px;">
 
         <?php foreach ($projetos as $projeto): ?>
             <div class="card">
-            <h3 style="margin: 0 0 8px; color: #3b579d; font-size: 17px;">
+            <h3 style="margin: 0 0 8px; color: #cf3f76; font-size: 17px;">
                 <?php echo htmlspecialchars($projeto['nome']); ?>
         </h3>
-        <p style="margin: 0 0 10px; font-size:14px; color: #374151; line-height: 1.6;">
+        <p style="margin: 0 0 10px; font-size:14px; color: #30446c; line-height: 1.6;">
             <?php echo htmlspecialchars($projeto['descricao']); ?>
         </p>
         <p style="margin: 0 0 6px; font-size: 13px; color: #6b7280;">
             🛠️ <?php echo htmlspecialchars($projeto['tecnologias']); ?>
+
         </p>
         <p style="margin: 0 0 12px; font-size: 13px; color: #6b7280;">
             📆 <?php echo (int) $projeto['ano']; ?>
