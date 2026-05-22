@@ -145,6 +145,13 @@ $caminho_raiz = './';
 <main>
     <div class="container">
         <h1 class="titulo-secao">Painel Administrativo</h1>
+        <div style="margin-bottom: 20px;">
+
+    <a href="logs.php" class="btn-secundario">
+        Ver logs do sistema
+    </a>
+
+</div>
 
         <?php if (isset($_GET['ok'])): ?>
             <div class="alerta-sucesso">
@@ -239,7 +246,21 @@ $caminho_raiz = './';
                 <tr>
                     <td><?php echo htmlspecialchars($p['nome']); ?></td>
                     <td style="text-align: center;"><?php echo (int) $p['ano']; ?></td>
-                    <td style="text-align: center;"><?php echo ucfirst($p['status']); ?></td>
+                    <td style="text-align: center;">
+
+    <?php
+        $classeStatus = match($p['status']) {
+            'publicado' => 'badge-publicado',
+            'arquivado' => 'badge-arquivado',
+            default => 'badge-rascunho'
+        };
+    ?>
+
+    <span class="badge-status <?php echo $classeStatus; ?>">
+        <?php echo ucfirst($p['status']); ?>
+    </span>
+
+</td>
                     <td>
                         <a href="admin.php?editar=<?php echo (int) $p['id']; ?>"
                             class="btn-secundario">Editar</a>
@@ -265,4 +286,3 @@ $caminho_raiz = './';
 <?php require_once __DIR__ . '/includes/rodape.php'; ?>
 </body>
 </html>
-<!--Feito por : Lana Santos-->
